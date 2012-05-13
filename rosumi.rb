@@ -1,5 +1,11 @@
  require "uri"
- require 'json'
+ begin
+   require 'json'
+ rescue LoadError
+  require 'rubygems'
+  gem 'json'
+  require 'json'
+ end
  require 'net/http'
  require 'net/https'
  require 'base64'

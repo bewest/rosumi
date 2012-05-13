@@ -1,8 +1,45 @@
 #!/usr/bin/env ruby
 
+require 'optparse'
+require 'pp'
 require "./rosumi.rb"
 
-r = Rosumi.new('username', 'password')
+$options = { }
+@parser = OptionParser.new do |opts|
+
+  opts.on("-v", "--[no-]verbose", "Run verbosely") do |v|
+    $options[:verbose] = v
+  end
+
+  opts.on('-u', "--username", "iCloud Username") do |v|
+    $options[:username] = v
+  end
+
+  opts.on('-p', "--password", "iCloud Password") do |v|
+    $options[:password] = v
+  end
+
+end
+
+begin
+  @options = @parser.parse!(ARGV)
+  mandatory = [:username, :password]
+  missing   = mandatory.select { |param| $options[param].nil? }
+  if not missing.empty?
+    descr = missing.map { |o| "--#{o}" }
+    puts "Missing options: #{descr.join(', ')}"
+    puts @parser
+    exit 1
+  end
+rescue OptionParser::InvalidOption, OptionParser::MissingArgument
+  puts $!.to_s
+  puts @parser
+  exit
+end
+pp @options
+pp $options
+
+r = Rosumi.new($options[:username], $options[:password])
 #=> #<Rosumi:0x0000010083b048 @user="username", @pass="password", @devices=[], @http=#<Net::HTTP fmipmobile.me.com:443 open=false> 
 
 puts r.locate
