@@ -11,11 +11,11 @@ $options = { }
     $options[:verbose] = v
   end
 
-  opts.on('-u', "--username", "iCloud Username") do |v|
+  opts.on('-u', "--username USERNAME", "iCloud Username") do |v|
     $options[:username] = v
   end
 
-  opts.on('-p', "--password", "iCloud Password") do |v|
+  opts.on('-p', "--password PASSWORD", "iCloud Password") do |v|
     $options[:password] = v
   end
 
@@ -36,8 +36,6 @@ rescue OptionParser::InvalidOption, OptionParser::MissingArgument
   puts @parser
   exit
 end
-pp @options
-pp $options
 
 r = Rosumi.new($options[:username], $options[:password])
 #=> #<Rosumi:0x0000010083b048 @user="username", @pass="password", @devices=[], @http=#<Net::HTTP fmipmobile.me.com:443 open=false> 
